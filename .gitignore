@@ -1,0 +1,6 @@
+.env
+vendor
+/vendor/
+/vendor
+/mariadb
+/mariadb/

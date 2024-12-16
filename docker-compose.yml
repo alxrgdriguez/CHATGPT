@@ -1,0 +1,37 @@
+services:
+  # Nginx
+  web:
+    container_name: nginx_chatgpt
+    image: nginx:latest
+    ports:
+      - "8090:80"
+    env_file:
+      - .env # Indica a Docker que cargue las variables desde este archivo
+    volumes:
+      - ./chatgpt/:/var/www/
+      - ./nginx.php-fpm.conf:/etc/nginx/nginx.conf:ro
+    links:
+      - php-fpm
+
+  # Configuración de php
+  php-fpm:
+    container_name: php_chatgpt
+    build: .
+    volumes:
+      - ./chatgpt:/var/www/html
+
+  #MariaDB
+  db:
+    container_name: mariadb_chatgpt
+    image: mariadb:latest
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: toor
+      MARIADB_DATABASE: ejemplo
+      MARIADB_USER: usuario
+      MARIADB_PASSWORD: usuario
+    ports:
+      - "3310:3306"
+    volumes:
+      - ./mariadb:/var/lib/mysql
+     
